@@ -52,6 +52,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_before"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:gravity="center"
@@ -82,6 +83,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_after"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:gravity="center"
@@ -115,37 +117,21 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
                 <LinearLayout
-                    android:id="@+id/attachments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:id="@+id/attach"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/bg_attach"
-                        android:contentDescription="@string/img_default_desc"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_attach"/>
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/before"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal">
+                </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/after"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal">
+                </LinearLayout>
 
             </RelativeLayout>
 
