@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imgattach = (ImageView) findViewById(R.id.attach);
         attachments = (LinearLayout) findViewById(R.id.attachmentss);
+        listImage=new ArrayList<>();
         imgattach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openBackCamera();
-                imgattach.setVisibility(View.GONE);
             }
         });
     }
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 ImageView imagetam = (ImageView) myLayout.findViewById(R.id.image_show_a_picture);
                 imagetam.setImageBitmap(myBitmap);
                 attachments.addView(myLayout);
-                imgattach.setVisibility(View.VISIBLE);
             }
         }
     }
