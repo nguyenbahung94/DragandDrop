@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
@@ -26,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class FragmentMain extends Fragment {
     private ImageView imgattach;
     private String pictureImagePath = "";
     private static int SELECTED = 0;
@@ -38,19 +40,20 @@ public class MainActivity extends AppCompatActivity {
     private HorizontalScrollView scrollView, scrollviewadd;
     private boolean isopenbefore = true;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        imgattach = (ImageView) findViewById(R.id.attach);
-        attachments = (LinearLayout) findViewById(R.id.attachmentss);
-        layoutbefore = (LinearLayout) findViewById(R.id.before);
-        layoutafter = (LinearLayout) findViewById(R.id.after);
-        tvafter = (TextView) findViewById(R.id.tv_after);
-        tvbefore = (TextView) findViewById(R.id.tv_before);
-        viewafter = (View) findViewById(R.id.after_indicator);
-        viewbefore = (View) findViewById(R.id.before_indicator);
-        scrollView = (HorizontalScrollView) findViewById(R.id.scroll);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_main, container, false);
+        imgattach = (ImageView) view.findViewById(R.id.attach);
+        attachments = (LinearLayout) view.findViewById(R.id.attachmentss);
+        layoutbefore = (LinearLayout) view.findViewById(R.id.before);
+        layoutafter = (LinearLayout) view.findViewById(R.id.after);
+        tvafter = (TextView) view.findViewById(R.id.tv_after);
+        tvbefore = (TextView) view.findViewById(R.id.tv_before);
+        viewafter = (View) view.findViewById(R.id.after_indicator);
+        viewbefore = (View) view.findViewById(R.id.before_indicator);
+        scrollView = (HorizontalScrollView) view.findViewById(R.id.scroll);
         tvafter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 openBackCamera();
             }
         });
+        return view;
     }
 
     private void openBackCamera() {
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
             galleryAddPic();
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 listImage.add(imgFile.getAbsolutePath());
-                LayoutInflater inflater = getLayoutInflater();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
                 View myLayout = inflater.inflate(R.layout.activity_show_a_picture, attachments, false);
                 ImageView imagetam = (ImageView) myLayout.findViewById(R.id.image_show_a_picture);
                 imagetam.setImageBitmap(myBitmap);
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         File f = new File(pictureImagePath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        sendBroadcast(mediaScanIntent);
+        getActivity().sendBroadcast(mediaScanIntent);
     }
 
     private final class MyClickListener implements View.OnLongClickListener {
@@ -163,15 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //the drag point has entered the bounding box of the View
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    if (v == findViewById(R.id.attachmentss)) {
-                        Log.e("attachmentss", String.valueOf(v.getId()));
-                    }
-                    if (v == findViewById(R.id.before)) {
-                        Log.e("before", String.valueOf(v.getId()));
-                    }
-                    if (v == findViewById(R.id.after)) {
-                        Log.e("after", String.valueOf(v.getId()));
-                    }
 
 
                     v.setBackground(targetShape);   //change the shape of the view
@@ -183,16 +178,16 @@ public class MainActivity extends AppCompatActivity {
                 //drag shadow has been released,the drag point is within the bounding box of the View
                 case DragEvent.ACTION_DROP:
                     // if the view is the bottomlinear, we accept the drag item
-                    if (v == findViewById(R.id.attachmentss)) {
+                    if (v == getActivity().findViewById(R.id.attachmentss)) {
                         View view = (View) event.getLocalState();
 //                        ViewGroup viewGroup = (ViewGroup) view.getParent();
 //                        viewGroup.removeView(view);
 //                       LinearLayout linearLayout=(LinearLayout)v;
 //                       linearLayout.addView(view);
-                        if (isopenbefore){
+                        if (isopenbefore) {
                             layoutbefore.removeView(view);
                         }
-                        if (!isopenbefore){
+                        if (!isopenbefore) {
                             layoutafter.removeView(view);
                         }
                         attachments.addView(view);
