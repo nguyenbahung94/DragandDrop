@@ -15,4 +15,16 @@
     <string name="start">Start</string>
     <string name="attachnents">Attachments</string>
     <string name="img_default_desc">IMG</string>
+    <!-- navigation drawber menu labels-->
+    <string name="nvhome">Home</string>
+    <!--Toolbar titles when navigation menu item is selected-->
+    <string-array name="nav_item_activity_title">
+        <item>Home</item>
+    </string-array>
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_privacy_policy">Privacy Policy</string>
+    <string name="action_clear_all">Clear All</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_mark_all_read">Mark All as Read</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String IMAGEVIEW_TAG = "icon bitmap";
     private TextView tvbefore, tvafter;
     private View viewbefore, viewafter;
-    private HorizontalScrollView scrollView;
+    private HorizontalScrollView scrollView, scrollviewadd;
     private boolean isopenbefore = true;
 
     @Override
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 viewbefore.setVisibility(View.GONE);
             }
         });
+        viewbefore.setVisibility(View.GONE);
         layoutbefore.setVisibility(View.VISIBLE);
         listImage = new ArrayList<>();
         scrollView.setOnDragListener(new MyDragListener());
@@ -161,31 +163,63 @@ public class MainActivity extends AppCompatActivity {
 
                 //the drag point has entered the bounding box of the View
                 case DragEvent.ACTION_DRAG_ENTERED:
-                  //  v.setBackground(targetShape);   //change the shape of the view
+                    if (v == findViewById(R.id.attachmentss)) {
+                        Log.e("attachmentss", String.valueOf(v.getId()));
+                    }
+                    if (v == findViewById(R.id.before)) {
+                        Log.e("before", String.valueOf(v.getId()));
+                    }
+                    if (v == findViewById(R.id.after)) {
+                        Log.e("after", String.valueOf(v.getId()));
+                    }
+
+
+                    v.setBackground(targetShape);   //change the shape of the view
                     break;
                 //the user has moved the drag shadow outside the bounding box of the View
                 case DragEvent.ACTION_DRAG_EXITED:
-                  //  v.setBackground(normalshape);   //change the shape of the view back to normal
+                    v.setBackground(normalshape);   //change the shape of the view back to normal
                     break;
                 //drag shadow has been released,the drag point is within the bounding box of the View
                 case DragEvent.ACTION_DROP:
                     // if the view is the bottomlinear, we accept the drag item
-                    if (isopenbefore){
+                    if (v == findViewById(R.id.attachmentss)) {
                         View view = (View) event.getLocalState();
-                        ViewGroup viewGroup = (ViewGroup) view.getParent();
-                        viewGroup.removeView(view);
-                     //   LinearLayout contaiView = (LinearLayout) v;
-                     //   contaiView.addView(view);
-                        layoutbefore.addView(view);
+//                        ViewGroup viewGroup = (ViewGroup) view.getParent();
+//                        viewGroup.removeView(view);
+//                       LinearLayout linearLayout=(LinearLayout)v;
+//                       linearLayout.addView(view);
+                        if (isopenbefore){
+                            layoutbefore.removeView(view);
+                        }
+                        if (!isopenbefore){
+                            layoutafter.removeView(view);
+                        }
+                        attachments.addView(view);
                         view.setVisibility(View.VISIBLE);
-                    }else {
-                        View view = (View) event.getLocalState();
-                        ViewGroup viewGroup = (ViewGroup) view.getParent();
-                        viewGroup.removeView(view);
-                        //   LinearLayout contaiView = (LinearLayout) v;
-                        //   contaiView.addView(view);
-                        layoutafter.addView(view);
-                        view.setVisibility(View.VISIBLE);
+                    } else {
+                        if (isopenbefore) {
+                            View view = (View) event.getLocalState();
+                            attachments.removeView(view);
+//                            ViewGroup viewGroup = (ViewGroup) view.getParent();
+//                            viewGroup.removeView(view);
+//                       LinearLayout linearLayout=(LinearLayout)v;
+//                       linearLayout.addView(view);
+                            layoutbefore.addView(view);
+                            view.setVisibility(View.VISIBLE);
+                        } else {
+                            if (!isopenbefore) {
+                                View view = (View) event.getLocalState();
+//                                ViewGroup viewGroup = (ViewGroup) view.getParent();
+//                                viewGroup.removeView(view);
+//                       LinearLayout linearLayout=(LinearLayout)v;
+//                       linearLayout.addView(view);
+                                attachments.removeView(view);
+                                layoutafter.addView(view);
+                                view.setVisibility(View.VISIBLE);
+                            }
+                        }
+
                     }
 
 
@@ -200,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 //the drag and drop operation has concluded.
                 case DragEvent.ACTION_DRAG_ENDED:
-                //    v.setBackground(normalshape);   //go back to normal shape
+                    //    v.setBackground(normalshape);   //go back to normal shape
                 default:
                     break;
             }
